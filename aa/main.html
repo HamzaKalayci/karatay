@@ -1,0 +1,1145 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Karatay Binicilik Kulübü - At Çiftliği & Restoran</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            line-height: 1.6;
+            color: #2c3e35;
+            background: #f8f9fa;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            
+        }
+
+        /* Header & Navigation */
+        header {
+            background: #ffffff;
+            backdrop-filter: blur(10px);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;    
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+
+          .logo {
+            display: flex;
+            align-items: center;
+            font-size: 1.8rem;
+            font-weight: bold;
+            color:  #f4d03f;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            letter-spacing: 1px;
+        }
+
+        .logo img {
+            height: 110px;
+            width: auto;
+            margin-right: 10px;
+            border-radius: 8px;
+            object-fit: contain;
+        }
+        .nav-links {
+            display: flex;
+            flex-wrap: nowrap;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color:  #000000;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 8px 16px;
+            border-radius: 25px;
+            white-space: nowrap;
+        }
+
+        .nav-links a:hover {
+            color: #030303;
+            background: rgba(212, 175, 55, 0.1);
+            flex-wrap: nowrap;
+        }
+
+        /* Hero Section */
+        .hero {
+           
+            height: 100vh;
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+        }
+        .slider-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        .slider-wrapper {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            opacity: 0;
+            transition: opacity 1.5s ease-in-out;
+        }
+
+        .slide.active {
+            opacity: 1;
+        }
+
+        .slide1 {
+            background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url("img/uclu.jpg");
+        }
+
+        .slide2 {
+            background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url("img/hasim.jpg");
+        }
+
+        .slide3 {
+            background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url("img/zeytin.jpg");
+        }
+
+        .slide4 {
+            background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url("img/restorantdıs.jpg");
+        }
+
+        .slide5 {
+            background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url("img/ataraba3.jpgz");
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(44, 62, 53, 0.1);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-content h1 {
+            font-size: 4rem;
+            color: #fff;
+            margin-bottom: 1rem;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.7);
+            font-weight: 300;
+            letter-spacing: 2px;
+        }
+
+        .hero-content p {
+            font-size: 1.3rem;
+            color: #f0f0f0;
+            margin-bottom: 2rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+            font-weight: 400;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(45deg, #d4af37, #f4d03f);
+            color: #2c3e35;
+            padding: 15px 40px;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(212, 175, 55, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 35px rgba(212, 175, 55, 0.5);
+        }
+             .slider-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 4;
+            background: rgba(255, 254, 254, 0.15);
+            backdrop-filter: img(0px);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            font-size: 1.8rem;
+            padding: 20px 25px;
+            cursor: pointer;
+            border-radius: 50%;
+            transition: all 0.4s ease;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            user-select: none;
+        }
+
+        .slider-nav:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-50%) scale(1.15);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+            border-color: rgba(255, 255, 255, 0.4);
+        }
+
+        .slider-nav:active {
+            transform: translateY(-50%) scale(0.95);
+        }
+
+        .slider-nav.prev {
+            left: 40px;
+        }
+
+        .slider-nav.next {
+            right: 40px;
+        }
+
+        /* Slider Indicators */
+        .slider-indicators {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 12px;
+            z-index: 4;
+        }
+
+        .indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid rgba(255, 255, 255, 0.8);
+        }
+
+        .indicator.active {
+            background: #d4af37;
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.8);
+            transform: scale(1.2);
+        }
+        /* Photo Placeholder */
+        .photo-placeholder {
+            width: 100%;
+            height: 300px;
+            background: linear-gradient(135deg, #e0e0e0, #f5f5f5);
+            border: 3px dashed #c0c0c0;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+            font-size: 1.1rem;
+            text-align: center;
+            margin: 20px 0;
+            transition: all 0.3s ease;
+        }
+
+        .photo-placeholder:hover {
+            border-color: #d4af37;
+            background: linear-gradient(135deg, #f8f8f8, #fff);
+        }
+
+        /* Sections */
+        .section {
+            padding: 100px 0;
+            background: #fff;
+            margin: 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .section:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        .section h2 {
+            font-size: 2.8rem;
+            text-align: center;
+            margin-bottom: 4rem;
+            color: #2c3e35;
+            position: relative;
+            font-weight: 300;
+            letter-spacing: 1px;
+        }
+
+        .section h2::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(45deg, #d4af37, #f4d03f);
+            border-radius: 2px;
+        }
+
+        /* About Section */
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .about-text {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #555;
+        }
+
+        .about-text p {
+            margin-bottom: 1.5rem;
+        }
+
+        
+
+        
+
+        /* Services Grid */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+        }
+
+        .service-card {
+            background: #fff;
+            padding: 40px 30px;
+            border-radius: 10px;
+            text-align: left;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            border-left: 4px solid #d4af37;
+        }
+
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.12);
+        }
+
+        .service-card h3 {
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+            color: #2c3e35;
+            font-weight: 600;
+        }
+
+        .service-card p {
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+            color: #666;
+        }
+
+        .service-card .features {
+            list-style: none;
+            margin-bottom: 1.5rem;
+        }
+
+        .service-card .features li {
+            padding: 5px 0;
+            color: #555;
+            position: relative;
+            padding-left: 20px;
+        }
+
+        .service-card .features li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #d4af37;
+            font-weight: bold;
+        }
+
+        .price {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #d4af37;
+            border-top: 2px solid #eee;
+            padding-top: 15px;
+        }
+
+        /* Menu Grid */
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .menu-category {
+            background: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.08);
+        }
+
+        .menu-category h3 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: #2c3e35;
+            border-bottom: 2px solid #d4af37;
+            padding-bottom: 10px;
+        }
+
+        .menu-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .menu-item:last-child {
+            border-bottom: none;
+        }
+
+        .menu-item h4 {
+            font-size: 1.1rem;
+            color: #2c3e35;
+            margin-bottom: 5px;
+        }
+
+        .menu-item p {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .menu-item .price {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #d4af37;
+            border: none;
+            padding: 0;
+        }
+
+        /* Map */
+        .map-container {
+            height: 450px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+            font-size: 1.1rem;
+            text-align: center;
+            border: 2px solid #e9ecef;
+        }
+
+        /* Contact Form */
+        .contact-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+        }
+
+        .contact-form {
+            background: #fff;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.08);
+        }
+
+        .contact-form h3 {
+            margin-bottom: 30px;
+            color: #2c3e35;
+            font-size: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2c3e35;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: #fff;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #d4af37;
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
+        }
+
+        .submit-btn {
+            background: linear-gradient(45deg, #2c3e35, #4a6a5a);
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(44, 62, 53, 0.3);
+        }
+
+        .contact-info {
+            background: #2c3e35;
+            padding: 40px;
+            border-radius: 10px;
+            color: white;
+        }
+
+        .contact-info h3 {
+            margin-bottom: 30px;
+            font-size: 1.5rem;
+            color: #d4af37;
+        }
+
+        .contact-info p {
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 1rem;
+        }
+
+        .contact-info .icon {
+            width: 20px;
+            text-align: center;
+            color: #d4af37;
+        }
+
+        /* Footer */
+        footer {
+            background: #2c3e35;
+            color: white;
+            text-align: center;
+            padding: 40px 0;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero-content p {
+                font-size: 1.1rem;
+            }
+
+            .about-content,
+            .contact-content {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .section {
+                padding: 60px 0;
+            }
+
+            .section h2 {
+                font-size: 2.2rem;
+            }
+
+            .about-stats {
+                grid-template-columns: 1fr;
+            }
+        }
+       
+.category-image {
+    width: 100%;
+    height: 150px;
+    overflow: hidden;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.category-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.category-image:hover img {
+    transform: scale(1.05);
+}
+
+ .contact-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .contact-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 18px 25px;
+            border-radius: 15px;
+            text-decoration: none;
+            font-size: 1.1em;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .contact-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .contact-btn:hover::before {
+            left: 100%;
+        }
+
+        .contact-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .whatsapp-btn {
+            background: linear-gradient(135deg, #25D366, #128C7E);
+            color: white;
+        }
+
+        .whatsapp-btn:hover {
+            background: linear-gradient(135deg, #128C7E, #25D366);
+        }
+
+        .instagram-btn {
+            background: linear-gradient(135deg, #E4405F, #C13584, #833AB4);
+            color: white;
+        }
+
+        .instagram-btn:hover {
+            background: linear-gradient(135deg, #C13584, #E4405F, #833AB4);
+        }
+
+        .phone-btn {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+        }
+
+        .phone-btn:hover {
+            background: linear-gradient(135deg, #2980b9, #3498db);
+        }
+
+        .icon {
+            font-size: 1.5em;
+            margin-right: 15px;
+        }
+
+        .contact-info {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .info-item {
+            margin-bottom: 10px;
+            color: #ecf0f1;
+            opacity: 0.8;
+        }
+
+       
+            
+            .title {
+                font-size: 1.8em;
+                padding-bottom: 10px;
+            }
+            
+            .contact-btn {
+                padding: 15px 20px;
+                font-size: 1.2em;
+            }
+        
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .about-photo {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+}
+
+.about-photo:hover {
+    transform: scale(1.02);
+}
+
+.content-wrapper {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+    margin-top: 20px;
+}
+
+.service-card {
+    flex: 1;
+    min-width: 300px;
+}
+
+.nature-image {
+    flex: 1;
+    
+}
+
+.nature-photo {
+    width: 450px;
+    height: 390px;
+     object-fit: cover;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+   
+}
+
+/* Mobil uyumluluk */
+@media (max-width: 768px) {
+    .content-wrapper {
+        flex-direction: column;
+    }
+    
+    .nature-image {
+        order: -1; /* Resmi mobilde üstte göster */
+    }
+
+}
+a{
+    background: #fff;
+            padding: 40px 30px;
+            border-radius: 10px;
+            text-align: left;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            border-left: 4px solid #d4af37;
+        }
+
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="container">
+            <div class="logo">
+                <img src="img/logo.png" alt="logo"></div>
+            
+            <ul class="nav-links">
+                <li><a href="#home">Ana Sayfa</a></li>
+                <li><a href="#about">Hakkımızda</a></li>
+                <li><a href="#location">Konum</a></li>
+                <li><a href="menu.html">Menü</a></li>
+                <li><a href="#riding">Binicilik</a></li>
+                <li><a href="#nature">Doğa Atölyesi</a></li>
+                <li><a href="#contact">İletişim</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <section id="home" class="hero">
+        <div class="slider-container">
+            <div class="slider-wrapper">
+                <div class="slide slide1 active"></div>
+                <div class="slide slide2"></div>
+                <div class="slide slide3"></div>
+                <div class="slide slide4"></div>
+                <div class="slide slide5"></div>
+            </div>
+        </div>
+        
+        <button class="slider-nav prev" onclick="changeSlide(-1)">‹</button>
+        <button class="slider-nav next" onclick="changeSlide(1)">›</button>
+        
+        <div class="slider-indicators">
+            <div class="indicator active" onclick="goToSlide(0)"></div>
+            <div class="indicator" onclick="goToSlide(1)"></div>
+            <div class="indicator" onclick="goToSlide(2)"></div>
+            <div class="indicator" onclick="goToSlide(3)"></div>
+            <div class="indicator" onclick="goToSlide(4)"></div>
+        </div>
+        
+        <div class="hero-content">
+            <h1>Karatay Binicilik Kulübü</h1>
+            <p>Doğa, at ve lezzet uyumunun buluşma noktası</p>
+            <a href="#about" class="cta-button">Keşfet</a>
+        </div>
+    </section>
+    
+    <div class="container">
+        <section id="about" class="section">
+            <h2>Hakkımızda</h2>
+            <div class="about-content">
+                <div class="about-text">
+                    <p>Karatay Binicilik Kulübü, at sevgisi ve mutfak mükemmelliğinin buluştuğu eşsiz bir birleşim noktasıdır. Zonguldağımızın güzel doğasının kalbinde yer alan çiftliğimiz, üç yılı aşkın süredir at severler ve lezzet tutkunları için bir sığınak olmuştur.</p>
+                    
+                    <p>Misyonumuz, huzurlu ve doğal bir ortamda güvenilir binicilik deneyimi sunarken, misafirlerimize en kaliteli yerel lezzetleri sunmaktır.Ayrıca ebeveyinlerimiz rahatça kahvelerini içerken değerli çocuklarının güvenilir bir ortam ve bir eğitmen eşliğinde doğa atölyeleri ile buluşmasını amaçlıyoruz. Atlarla ve doğayla bağ kurmanın gücüne inanıyor, yaşam boyu unutulmayacak anılar yaratıyoruz.</p>
+                    
+                    <p>Başlangıç seviyesi binicilik derslerinden ileri düzey eğitimlere, geleneksel Türk yemeklerinden uluslararası mutfağa kadar, şehir hayatının koşturmacasından tam bir kaçış sunuyoruz.</p>
+                </div>
+                <div>
+                <div class="about-image">
+                <img src="img/uclu.jpg" alt="Karatay At Çiftliği" class="about-photo">
+            </div>
+                
+                
+                </div>
+            </div>
+        </section>
+
+        <section id="location" class="section">
+            <h2>Konumumuz</h2>
+            <div class="photo-placeholder">
+                <div style="flex: 1;">
+                <iframe 
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1524.2059471916465!2d31.9807412!3d41.3656669!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x409c857ab450d623%3A0xfcafbe3363912843!2skaratay%20at%20%C3%A7iftli%C4%9Fi!5e0!3m2!1str!2str!4v1625097600000!5m2!1str!2str"
+                    width="100%" 
+                    height="300" 
+                    style="border:0; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);" 
+                    allowfullscreen="" 
+                    loading="lazy" 
+                    referrerpolicy="no-referrer-when-downgrade">
+                </iframe>
+                </div>
+            </div>
+            <div class="map-container">
+                <div>
+                    <h3>📍 Bizi Bulun</h3>
+                    <p>Zonguldağın doğal güzellikleri arasında yer alan çiftliğimiz<br>
+                    Kolay ulaşım ve geniş park alanı<br>
+                    Yeşil tepeler ve doğal güzelliklerle çevrili<br>
+                    <strong>Adres:</strong> Karaman Beldesi, Zonguldak<br>
+                    <em>Detaylı harita entegrasyonu mevcut</em></p>
+                </div>
+            </div>
+             
+
+        </section>
+
+
+        <section id="riding" class="section">
+            <h2>Binicilik Hizmetlerimiz</h2>
+           
+            <div class="about-image">
+                <img src="img/cıcek2.jpg" alt="Karatay At Çiftliği" class="about-photo">
+            </div>
+            
+            <div class="services-grid">
+                <div class="service-card">
+                    <h3>Başlangıç Dersleri</h3>
+                    <div class="category-image">
+                    <img src="img/hasim.jpg" alt="Mezeler">
+                </div>
+                    <p>İlk kez at binecekler için mükemmel. Uysal, eğitimli atlarımız ve deneyimli eğitmenlerimizle temel binicilik tekniklerini öğrenin.</p>
+                    <ul class="features">
+                        <li>Güvenli ve eğitimli atlar</li>
+                        <li>Profesyonel eğitmen rehberliği</li>
+                        <li>Temel binicilik teknikleri</li>
+                        <li>Güvenlik ekipmanları dahil</li>
+                    </ul>
+                    <div class="price">₺12500 / 8 Ders</div>
+                </div>
+                
+                <div class="service-card">
+                    <h3>İleri Düzey Eğitim</h3>
+                    <div class="category-image">
+                    <img src="https://via.placeholder.com/300x150?text=MEZELER" alt="engel">
+                </div>
+                    <p>Deneyimli biniciler için jumping, dressage ve ileri teknikleri içeren eğitim programları.</p>
+                    <ul class="features">
+                        <li>Engel atlama teknikleri</li>
+                        <li>Dressage eğitimi</li>
+                        <li>Yarış hazırlığı</li>
+                        <li>Özel eğitim programları</li>
+                    </ul>
+                    <div class="price">₺32500 / 20 Ders</div>
+                </div>
+                
+                <div class="service-card">
+                    <h3>Doğa Turları</h3>
+                    <div class="category-image">
+                    <img src="img/safari.jpg" alt="safari">
+                </div>
+                    <p>Nefes kesen manzaralar eşliğinde rehberli doğa turları. Güzel rotalar boyunca atla keşif yapın.</p>
+                    <ul class="features">
+                        <li>Rehberli doğa turları</li>
+                        <li>Manzara rotaları</li>
+                        <li>Fotoğraf molaları</li>
+                        
+                    </ul>
+                    <div class="price">₺2500 / Saat</div>
+                </div>
+                
+                <div class="service-card">
+                    <h3>Çocuk binişleri</h3>
+                    <div class="category-image">
+                    <img src="img/Zeytin.jpg" alt="cocuk">
+                </div>
+                    <p>Çocuklar için manejde pony binme içeren bilet.</p>
+                    <ul class="features">
+                        <li>Çocuk dostu ponyler</li>
+                        <li>Güvenlik öncelikleri</li>
+                        <li>Fotoğraf çekimi</li>
+                    </ul>
+                    <div class="price">₺200 / 2 Tur</div>
+            
+                </div>
+                 <div class="service-card">
+                    <h3>Yetişkin binişleri</h3>
+                    <div class="category-image">
+                    <img src="" alt="Yetişkin">
+                </div>
+                    <p>Yetişkinler için manejde at biniş biletleri.</p>
+                    <ul class="features">
+                        <li>Arkadaş canlısı atlarımız</li>
+                        <li>Güvenlik öncelikleri</li>
+                        <li>Fotoğraf çekimi</li>
+                        
+                    </ul>
+                    <div class="price">₺250 / 3 Tur</div>
+                
+                </div>
+                <div class="service-card">
+                    <h3>Özel bireylerin biniş bileti</h3>
+                    <div class="category-image">
+                    <img src="Zeytin.jpg" alt="cocuk">
+                </div>
+                    <p>Özel bireylerimiz için manejde biniş içeren bilet.</p>
+                    <ul class="features">
+                        <li>Sertifikalı eğitmenimiz eşliğinde</li>
+                        <li>Güvenlik öncelikleri</li>
+                        <li>Fotoğraf çekimi</li>
+                    </ul>
+                    <div class="price">₺200 / 2 Tur</div>
+                
+            
+            </div>
+            <div class="content-wrapper">
+            <div class="service-card">
+                 <p style="font-size: 1.1rem; color: #2c3e35; margin-bottom: 20px; font-weight: 500;">
+                    Eğer eğitim paketi aldıysanız bu linkten randevu oluşturabilirsiniz
+                </p>
+                <a href="karatay_binicilik/index.html" style="display: inline-block; background: linear-gradient(45deg, #d4af37, #f4d03f); color: #2c3e35; padding: 15px 35px; text-decoration: none; border-radius: 50px; font-weight: 600; font-size: 1rem; transition: all 0.3s ease; box-shadow: 0 5px 15px rgba(212, 175, 55, 0.3); text-transform: uppercase; letter-spacing: 1px;">
+                    Randevu Oluştur
+                </a>
+                </div>
+            </div>
+            
+        </section>
+
+    <section id="nature" class="section">
+    <h2>Çocuklar İçin Doğa Atölyesi</h2>
+
+    <div class="content-wrapper">
+        <div class="service-card">
+            <h3>Yaratıcı Atölyeler</h3>
+            <p>Doğal malzemelerle el sanatları, boyama ve yaratıcı projeler yapacakları atölyeler.</p>
+            <ul class="features">
+                <li>Doğal malzemelerle sanat</li>
+                <li>At temalı el sanatları</li>
+                <li>Yaratıcı projeler</li>
+                <li>Geleneksel oyunlar</li>
+                <li>Parkur</li>
+            </ul>
+            <div class="price">₺350 / Saat</div>
+        </div>
+        
+        <div class="nature-image">
+            <img src="img/shatolye.jpg" alt="Çocuklar için doğa atölyesi" class="nature-photo">
+        </div>
+    </div>
+</section>
+
+        <section id="contact" class="section">
+            <h2>İletişim</h2>
+            <div class="service-card">
+        <h1 class="title">Bizimle iletişime geçin 🐎</h1>
+
+
+       
+        <div class="contact-buttons">
+            <a href="https://wa.me/905436980023" class="contact-btn whatsapp-btn" target="_blank">
+                
+                WhatsApp ile İletişim
+            </a>
+            
+            <a href="https://instagram.com/karataybinicilikkulubu" class="contact-btn instagram-btn" target="_blank">
+               
+                Instagram'ı Takip Et
+            </a>
+            
+            <a href="tel:+905436980023" class="contact-btn phone-btn">
+                
+                Telefon ile Ara
+            </a>
+            <a href="tel:+905393438956" class="contact-btn phone-btn">
+                
+                Telefon 2 ile Ara
+            </a>
+        </div>
+
+    
+    </div>
+
+    <script>
+        // Hover efektleri için JavaScript
+        document.querySelectorAll('.contact-btn').forEach(btn => {
+            btn.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-3px) scale(1.02)';
+            });
+            
+            btn.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+
+        // Tıklama efekti
+        document.querySelectorAll('.contact-btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                this.style.transform = 'translateY(0) scale(0.98)';
+                setTimeout(() => {
+                    this.style.transform = 'translateY(-3px) scale(1.02)';
+                }, 100);
+            });
+        });
+
+         let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const indicators = document.querySelectorAll('.indicator');
+        const totalSlides = slides.length;
+
+        function showSlide(index) {
+            // Remove active class from all slides and indicators
+            slides.forEach(slide => slide.classList.remove('active'));
+            indicators.forEach(indicator => indicator.classList.remove('active'));
+            
+            // Add active class to current slide and indicator
+            slides[index].classList.add('active');
+            indicators[index].classList.add('active');
+        }
+
+        function changeSlide(direction) {
+            currentSlide += direction;
+            
+            if (currentSlide >= totalSlides) {
+                currentSlide = 0;
+            } else if (currentSlide < 0) {
+                currentSlide = totalSlides - 1;
+            }
+            
+            showSlide(currentSlide);
+        }
+
+        function goToSlide(index) {
+            currentSlide = index;
+            showSlide(currentSlide);
+        }
+
+        // Auto-slide functionality
+        setInterval(() => {
+            changeSlide(1);
+        }, 5000); // Change slide every 5 seconds
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+
+

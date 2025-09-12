@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Karatay Binicilik - Randevu Sistemi</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .logo {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 20px;
+            background: linear-gradient(135deg, #f1c40f 0%, #f39c12 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            box-shadow: 0 10px 30px rgba(241, 196, 15, 0.3);
+        }
+        
+        .login-container {
+            max-width: 400px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        
+        .login-title {
+            color: #2c3e50;
+            font-size: 1.8rem;
+            margin-bottom: 30px;
+        }
+        
+        .passcode-dots {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .passcode-dot {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 2px solid #ddd;
+            transition: all 0.3s ease;
+        }
+        
+        .passcode-dot.filled {
+            background: linear-gradient(135deg, #f1c40f 0%, #f39c12 100%);
+            border-color: #f39c12;
+        }
+        
+        .passcode-keypad {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            max-width: 250px;
+            margin: 0 auto;
+        }
+        
+        .passcode-key {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            border: none;
+            background: #ecf0f1;
+            color: #2c3e50;
+            font-size: 24px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .passcode-key:hover {
+            background: #f1c40f;
+            color: white;
+        }
+        
+        .passcode-key.delete {
+            background: #e74c3c;
+            color: white;
+            font-size: 20px;
+        }
+        
+        .error-message {
+            color: #e74c3c;
+            margin-top: 15px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .error-message.show {
+            opacity: 1;
+        }
+        
+        .main-container {
+            display: none;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .date-selector {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .date-selector h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+        }
+        
+        .date-input {
+            padding: 12px 20px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            text-align: center;
+            margin: 0 10px;
+            transition: border-color 0.3s;
+        }
+        
+        .date-input:focus {
+            outline: none;
+            border-color: #f1c40f;
+        }
+        
+        .btn {
+            background: linear-gradient(135deg, #f1c40f 0%, #f39c12 100%);
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            margin: 0 5px;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(241, 196, 15, 0.4);
+        }
+        
+        .btn.danger {
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+        }
+        
+        .btn.danger:hover {
+            box-shadow: 0 5px 15px rgba(231, 76, 60, 0.4);
+        }
+        
+        .schedule-container {
+            margin-top: 30px;
+        }
+        
+        .schedule-date {
+            font-size: 1.5rem;
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #ecf0f1;
+            border-radius: 10px;
+        }
+        
+        .time-slots {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .time-slot {
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: bold;
+            position: relative;
+        }
+        
+        .time-slot.available {
+            background: #2ecc71;
+            color: white;
+            border-color: #27ae60;
+        }
+        
+        .time-slot.available:hover {
+            background: #27ae60;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(46, 204, 113, 0.3);
+        }
+        
+        .time-slot.occupied {
+            background: #e74c3c;
+            color: white;
+            border-color: #c0392b;
+            cursor: pointer;
+        }
+        
+        .time-slot.occupied:hover {
+            background: #c0392b;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(231, 76, 60, 0.3);
+        }
+        
+        .time-slot.selected {
+            background: #f1c40f;
+            color: white;
+            border-color: #f39c12;
+            transform: scale(1.05);
+        }
+        
+        .student-info {
+            font-size: 12px;
+            margin-top: 5px;
+            opacity: 0.9;
+        }
+        
+        .booking-form {
+            margin-top: 30px;
+            padding: 25px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 4px solid #f1c40f;
+        }
+        
+        .delete-form {
+            margin-top: 30px;
+            padding: 25px;
+            background: #fff5f5;
+            border-radius: 10px;
+            border-left: 4px solid #e74c3c;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #555;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: #f1c40f;
+        }
+        
+        .selected-time-display {
+            background: #f1c40f;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            display: inline-block;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        
+        .selected-time-display.delete {
+            background: #e74c3c;
+        }
+        
+        .status-message {
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            text-align: center;
+            font-weight: bold;
+        }
+        
+        .status-message.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .status-message.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .daily-summary {
+            background: #e8f4fd;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border-left: 4px solid #3498db;
+        }
+        
+        .summary-title {
+            color: #2980b9;
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        
+        .summary-stats {
+            display: flex;
+            justify-content: space-around;
+            text-align: center;
+        }
+        
+        .stat-item {
+            flex: 1;
+        }
+        
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #2980b9;
+        }
+        
+        .stat-label {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .appointment-details {
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .appointment-details h4 {
+            color: #e74c3c;
+            margin-bottom: 10px;
+        }
+        
+        .appointment-info {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        
+        .logout-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+        }
+        
+        .connection-status {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            padding: 8px 12px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        
+        .connection-status.online {
+            background: #2ecc71;
+            color: white;
+        }
+        
+        .connection-status.offline {
+            background: #e74c3c;
+            color: white;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .time-slots {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+            
+            .main-container {
+                padding: 20px;
+            }
+            
+            .summary-stats {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">🐎</div>
+            <h1>Karatay Binicilik Kulübü</h1>
+            <p>Randevu Yönetim Sistemi</p>
+        </div>
+        
+        <!-- Bağlantı Durumu -->
+        <div id="connectionStatus" class="connection-status online">🟢 Çevrimiçi</div>
+        
+        <!-- Giriş Formu -->
+        <div id="loginForm" class="login-container">
+            <h2 class="login-title">Hoş Geldiniz</h2>
+            <p>Devam etmek için şifrenizi girin</p>
+            <div class="passcode-dots" id="passcodeDots">
+                <div class="passcode-dot"></div>
+                <div class="passcode-dot"></div>
+                <div class="passcode-dot"></div>
+                <div class="passcode-dot"></div>
+            </div>
+            <div class="passcode-keypad">
+                <button class="passcode-key" onclick="addDigit('1')">1</button>
+                <button class="passcode-key" onclick="addDigit('2')">2</button>
+                <button class="passcode-key" onclick="addDigit('3')">3</button>
+                <button class="passcode-key" onclick="addDigit('4')">4</button>
+                <button class="passcode-key" onclick="addDigit('5')">5</button>
+                <button class="passcode-key" onclick="addDigit('6')">6</button>
+                <button class="passcode-key" onclick="addDigit('7')">7</button>
+                <button class="passcode-key" onclick="addDigit('8')">8</button>
+                <button class="passcode-key" onclick="addDigit('9')">9</button>
+                <div></div>
+                <button class="passcode-key" onclick="addDigit('0')">0</button>
+                <button class="passcode-key delete" onclick="removeDigit()">⌫</button>
+            </div>
+            <div class="error-message" id="errorMessage">Yanlış şifre! Tekrar deneyin.</div>
+        </div>
+        
+        <!-- Ana Uygulama -->
+        <div id="mainApp" class="main-container">
+            <button class="logout-btn" onclick="logout()">Çıkış</button>
+            
+            <!-- Tarih Seçimi -->
+            <div class="date-selector">
+                <h2>📅 Randevu Tarihi Seçin</h2>
+                <input type="date" id="selectedDate" class="date-input" onchange="loadSchedule()">
+            </div>
+            
+            <!-- Günlük Özet -->
+            <div id="dailySummary" class="daily-summary" style="display: none;">
+                <div class="summary-title">📊 Günlük Özet</div>
+                <div class="summary-stats">
+                    <div class="stat-item">
+                        <div class="stat-number" id="totalSlots">12</div>
+                        <div class="stat-label">Toplam Saat</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" id="bookedSlots">0</div>
+                        <div class="stat-label">Dolu</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" id="availableSlots">12</div>
+                        <div class="stat-label">Müsait</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Program Gösterimi -->
+            <div id="scheduleContainer" class="schedule-container" style="display: none;">
+                <div id="scheduleDate" class="schedule-date"></div>
+                <div id="timeSlots" class="time-slots"></div>
+                
+                <!-- Randevu Alma Formu -->
+                <div id="bookingForm" class="booking-form" style="display: none;">
+                    <h3>🎯 Yeni Randevu Al</h3>
+                    <div id="selectedTimeDisplay" class="selected-time-display"></div>
+                    <div class="form-group">
+                        <label for="studentName">👤 Adınız Soyadınız:</label>
+                        <input type="text" id="studentName" placeholder="Adınızı ve soyadınızı girin" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="notes">📝 Not (İsteğe bağlı):</label>
+                        <input type="text" id="notes" placeholder="Ek notlarınız varsa yazabilirsiniz">
+                    </div>
+                    <button class="btn" onclick="bookAppointment()" id="bookBtn">✅ Randevuyu Onayla</button>
+                    <button class="btn" onclick="cancelSelection()" style="background: #95a5a6;">❌ İptal</button>
+                </div>
+                
+                <!-- Randevu Silme Formu -->
+                <div id="deleteForm" class="delete-form" style="display: none;">
+                    <h3>🗑️ Randevu Sil</h3>
+                    <div id="deleteTimeDisplay" class="selected-time-display delete"></div>
+                    <div id="appointmentDetails" class="appointment-details"></div>
+                    <p style="color: #e74c3c; font-weight: bold; margin-bottom: 15px;">
+                        ⚠️ Bu randevuyu silmek istediğinizden emin misiniz?
+                    </p>
+                    <button class="btn danger" onclick="deleteAppointment()" id="deleteBtn">🗑️ Randevuyu Sil</button>
+                    <button class="btn" onclick="cancelSelection()" style="background: #95a5a6;">❌ İptal</button>
+                </div>
+            </div>
+            
+            <!-- Durum Mesajları -->
+            <div id="statusMessage" style="display: none;"></div>
+            
+            <!-- Yükleme Mesajı -->
+            <div id="loadingMessage" class="loading" style="display: none;">
+                <div>⏳ Yükleniyor...</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Konfigürasyon
+        const API_BASE_URL = 'api/appointments.php'; // PHP API'nin yolu
+        const PASSCODE = '1234'; // Şifre
+        
+        // Global değişkenler
+        let appointments = {};
+        let selectedDate = null;
+        let selectedTime = null;
+        let selectedAppointment = null;
+        let passcode = '';
+        let isLoggedIn = false;
+        
+        // Sabit saat dilimleri
+        const timeSlots = [
+            '09:00', '10:00', '11:00', '12:00', 
+            '13:00', '14:00', '15:00', '16:00', 
+            '17:00', '18:00', '19:00', '20:00'
+        ];
+
+        // Giriş fonksiyonları
+        function addDigit(digit) {
+            if (passcode.length < 4) {
+                passcode += digit;
+                updatePasscodeDots();
+                
+                if (passcode.length === 4) {
+                    setTimeout(checkPasscode, 300);
+                }
+            }
+        }
+
+        function removeDigit() {
+            passcode = passcode.slice(0, -1);
+            updatePasscodeDots();
+        }
+
+        function updatePasscodeDots() {
+            const dots = document.querySelectorAll('.passcode-dot');
+            dots.forEach((dot, index) => {
+                if (index < passcode.length) {
+                    dot.classList.add('filled');
+                } else {
+                    dot.classList.remove('filled');
+                }
+            });
+        }
+
+        function checkPasscode() {
+            if (passcode === PASSCODE) {
+                isLoggedIn = true;
+                document.getElementById('loginForm').style.display = 'none';
+                document.getElementById('mainApp').style.display = 'block';
+                setToday();
+                loadSchedule();
+            } else {
+                showError();
+                passcode = '';
+                updatePasscodeDots();
+            }
+        }
+
+        function showError() {
+            const errorMessage = document.getElementById('errorMessage');
+            errorMessage.classList.add('show');
+            setTimeout(() => {
+                errorMessage.classList.remove('show');
+            }, 3000);
+        }
+
+        function logout() {
+            isLoggedIn = false;
+            passcode = '';
+            updatePasscodeDots();
+            document.getElementById('loginForm').style.display = 'block';
+            document.getElementById('mainApp').style.display = 'none';
+        }
+
+        // API çağrıları
+        async function apiCall(method, endpoint, data = null) {
+            const loadingMessage = document.getElementById('loadingMessage');
+            loadingMessage.style.display = 'block';
+            
+            try {
+                const options = {
+                    method: method,
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                };
+                
+                if (data) {
+                    options.body = JSON.stringify(data);
+                }
+                
+                const response = await fetch(endpoint, options);
+                const result = await response.json();
+                
+                updateConnectionStatus(true);
+                
+                if (!response.ok) {
+                    throw new Error(result.error || 'API hatası');
+                }
+                
+                return result;
+            } catch (error) {
+                console.error('API Hatası:', error);
+                updateConnectionStatus(false);
+                showMessage('Bağlantı hatası: ' + error.message, 'error');
+                throw error;
+            } finally {
+                loadingMessage.style.display = 'none';
+            }
+        }
+
+        function updateConnectionStatus(isOnline) {
+            const status = document.getElementById('connectionStatus');
+            if (isOnline) {
+                status.className = 'connection-status online';
+                status.textContent = '🟢 Çevrimiçi';
+            } else {
+                status.className = 'connection-status offline';
+                status.textContent = '🔴 Çevrimdışı';
+            }
+        }
+
+        // Veri yönetimi
+        async function loadData(date = null) {
+            try {
+                const endpoint = date ? `${API_BASE_URL}?date=${date}` : API_BASE_URL;
+                const data = await apiCall('GET', endpoint);
+                appointments = data;
+                return data;
+            } catch (error) {
+                console.error('Veri yükleme hatası:', error);
+                return {};
+            }
+        }
+
+        async function saveAppointment(appointmentData) {
+            try {
+                const result = await apiCall('POST', API_BASE_URL, appointmentData);
+                return result;
+            } catch (error) {
+                console.error('Randevu kaydetme hatası:', error);
+                throw error;
+            }
+        }
+
+        async function removeAppointment(appointmentId) {
+            try {
+                const result = await apiCall('DELETE', API_BASE_URL, { id: appointmentId });
+                return result;
+            } catch (error) {
+                console.error('Randevu silme hatası:', error);
+                throw error;
+            }
+        }
+
+        // Tarih fonksiyonları
+        function setToday() {
+            const today = new Date();
+            const dateStr = today.toISOString().split('T')[0];
+            document.getElementById('selectedDate').value = dateStr;
+        }
+
+        async function loadSchedule() {
+            const dateInput = document.getElementById('selectedDate').value;
+            if (!dateInput) {
+                document.getElementById('scheduleContainer').style.display = 'none';
+                document.getElementById('dailySummary').style.display = 'none';
+                return;
+            }
+            
+            selectedDate = dateInput;
+            await loadData(selectedDate);
+            displaySchedule();
+        }
+
+        function displaySchedule() {
+            const scheduleContainer = document.getElementById('scheduleContainer');
+            const scheduleDate = document.getElementById('scheduleDate');
+            const timeSlotsContainer = document.getElementById('timeSlots');
+            const dailySummary = document.getElementById('dailySummary');
+            
+            // Tarihi güzel formatta göster
+            const date = new Date(selectedDate + 'T00:00:00');
+            const options = { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+            };
+            scheduleDate.textContent = date.toLocaleDateString('tr-TR', options);
+            
+            // Saat dilimlerini oluştur
+            timeSlotsContainer.innerHTML = '';
+            const dayAppointments = appointments[selectedDate] || [];
+            
+            let bookedCount = 0;
+            
+            timeSlots.forEach(time => {
+                const slot = document.createElement('div');
+                slot.className = 'time-slot';
+                
+                // Bu saatte randevu var mı kontrol et
+                const appointment = dayAppointments.find(apt => apt.time === time);
+                
+                if (appointment) {
+                    slot.classList.add('occupied');
+                    slot.innerHTML = `
+                        <div>${time}</div>
+                        <div class="student-info">DOLU - ${appointment.student}</div>
+                    `;
+                    slot.addEventListener('click', () => selectOccupiedSlot(time, appointment, slot));
+                    bookedCount++;
+                } else {
+                    slot.classList.add('available');
+                    slot.innerHTML = `
+                        <div>${time}</div>
+                        <div class="student-info">MÜSAİT</div>
+                    `;
+                    slot.addEventListener('click', () => selectTimeSlot(time, slot));
+                }
+                
+                timeSlotsContainer.appendChild(slot);
+            });
+            
+            // Özeti güncelle
+            document.getElementById('bookedSlots').textContent = bookedCount;
+            document.getElementById('availableSlots').textContent = timeSlots.length - bookedCount;
+            
+            // Göster
+            scheduleContainer.style.display = 'block';
+            dailySummary.style.display = 'block';
+        }
+
+        function selectTimeSlot(time, element) {
+            selectedTime = time;
+            selectedAppointment = null;
+            
+            // Önceki seçimi temizle
+            clearSelections();
+            
+            // Yeni seçimi işaretle
+            element.classList.add('selected');
+            
+            // Randevu alma formunu göster
+            document.getElementById('selectedTimeDisplay').textContent = `Seçilen Saat: ${time}`;
+            document.getElementById('bookingForm').style.display = 'block';
+            document.getElementById('deleteForm').style.display = 'none';
+            
+            // Forma scroll
+            document.getElementById('bookingForm').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function selectOccupiedSlot(time, appointment, element) {
+            selectedTime = time;
+            selectedAppointment = appointment;
+            
+            // Önceki seçimi temizle
+            clearSelections();
+            
+            // Yeni seçimi işaretle
+            element.classList.add('selected');
+            
+            // Silme formunu göster
+            document.getElementById('deleteTimeDisplay').textContent = `Seçilen Saat: ${time}`;
+            
+            // Randevu detaylarını göster
+            const detailsContainer = document.getElementById('appointmentDetails');
+            detailsContainer.innerHTML = `
+                <h4>Randevu Bilgileri</h4>
+                <div class="appointment-info">
+                    <strong>👤 İsim:</strong> ${appointment.student}<br>
+                    <strong>🕐 Saat:</strong> ${appointment.time}<br>
+                    <strong>📝 Not:</strong> ${appointment.notes || 'Not yok'}<br>
+                    <strong>📅 Oluşturulma:</strong> ${new Date(appointment.createdAt).toLocaleString('tr-TR')}
+                </div>
+            `;
+            
+            document.getElementById('deleteForm').style.display = 'block';
+            document.getElementById('bookingForm').style.display = 'none';
+            
+            // Forma scroll
+            document.getElementById('deleteForm').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function clearSelections() {
+            document.querySelectorAll('.time-slot').forEach(slot => {
+                slot.classList.remove('selected');
+            });
+        }
+
+        function cancelSelection() {
+            selectedTime = null;
+            selectedAppointment = null;
+            clearSelections();
+            document.getElementById('bookingForm').style.display = 'none';
+            document.getElementById('deleteForm').style.display = 'none';
+            
+            // Formu temizle
+            document.getElementById('studentName').value = '';
+            document.getElementById('notes').value = '';
+        }
+
+        async function bookAppointment() {
+            if (!selectedTime || !selectedDate) {
+                showMessage('Lütfen bir tarih ve saat seçin!', 'error');
+                return;
+            }
+            
+            const studentName = document.getElementById('studentName').value.trim();
+            if (!studentName) {
+                showMessage('Lütfen adınızı ve soyadınızı girin!', 'error');
+                return;
+            }
+            
+            // Buton durumunu değiştir
+            const bookBtn = document.getElementById('bookBtn');
+            bookBtn.disabled = true;
+            bookBtn.textContent = '⏳ Kaydediliyor...';
+            
+            try {
+                // Randevu verilerini oluştur
+                const appointmentData = {
+                    date: selectedDate,
+                    time: selectedTime,
+                    student: studentName,
+                    notes: document.getElementById('notes').value.trim()
+                };
+                
+                // Sunucuya gönder
+                const result = await saveAppointment(appointmentData);
+                
+                showMessage(`✅ Randevunuz başarıyla kaydedildi!\n📅 Tarih: ${new Date(selectedDate + 'T00:00:00').toLocaleDateString('tr-TR')}\n🕐 Saat: ${selectedTime}\n👤 İsim: ${studentName}`, 'success');
+                
+                // Ekranı yenile
+                await loadSchedule();
+                cancelSelection();
+                
+            } catch (error) {
+                showMessage('Randevu kaydedilirken hata oluştu: ' + error.message, 'error');
+            } finally {
+                // Buton durumunu eski haline getir
+                bookBtn.disabled = false;
+                bookBtn.textContent = '✅ Randevuyu Onayla';
+            }
+        }
+
+        async function deleteAppointment() {
+            if (!selectedAppointment || !selectedDate) {
+                showMessage('Silinecek randevu bulunamadı!', 'error');
+                return;
+            }
+            
+            // Buton durumunu değiştir
+            const deleteBtn = document.getElementById('deleteBtn');
+            deleteBtn.disabled = true;
+            deleteBtn.textContent = '⏳ Siliniyor...';
+            
+            try {
+                // Sunucudan sil
+                await removeAppointment(selectedAppointment.id);
+                
+                showMessage(`🗑️ Randevu başarıyla silindi!\n📅 Tarih: ${new Date(selectedDate + 'T00:00:00').toLocaleDateString('tr-TR')}\n🕐 Saat: ${selectedTime}\n👤 İsim: ${selectedAppointment.student}`, 'success');
+                
+                // Ekranı yenile
+                await loadSchedule();
+                cancelSelection();
+                
+            } catch (error) {
+                showMessage('Randevu silinirken hata oluştu: ' + error.message, 'error');
+            } finally {
+                // Buton durumunu eski haline getir
+                deleteBtn.disabled = false;
+                deleteBtn.textContent = '🗑️ Randevuyu Sil';
+            }
+        }
+
+        function showMessage(message, type) {
+            const messageDiv = document.getElementById('statusMessage');
+            messageDiv.className = `status-message ${type}`;
+            messageDiv.textContent = message;
+            messageDiv.style.display = 'block';
+            
+            // 5 saniye sonra gizle
+            setTimeout(() => {
+                messageDiv.style.display = 'none';
+            }, 5000);
+            
+            // Mesaja scroll
+            messageDiv.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Otomatik yenileme
+        async function autoRefresh() {
+            if (isLoggedIn && selectedDate) {
+                try {
+                    await loadSchedule();
+                } catch (error) {
+                    console.log('Otomatik yenileme hatası:', error);
+                }
+            }
+        }
+
+        // Keyboard kontrolü
+        document.addEventListener('keydown', function(event) {
+            if (document.getElementById('loginForm').style.display !== 'none') {
+                // Giriş ekranındaysa
+                if (event.key >= '0' && event.key <= '9') {
+                    addDigit(event.key);
+                } else if (event.key === 'Backspace') {
+                    event.preventDefault();
+                    removeDigit();
+                } else if (event.key === 'Enter' && passcode.length === 4) {
+                    checkPasscode();
+                }
+            }
+        });
+
+        // Sayfa yüklendiğinde
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Karatay Binicilik Randevu Sistemi hazır - MySQL sürümü');
+            
+            // İlk bağlantıyı test et
+            loadData().then(() => {
+                console.log('Sunucu bağlantısı başarılı');
+            }).catch(error => {
+                console.error('Sunucu bağlantısı başarısız:', error);
+                updateConnectionStatus(false);
+            });
+            
+            // 30 saniyede bir otomatik yenile
+            setInterval(autoRefresh, 30000);
+        });
+
+        // Sayfa görünürlük değişikliklerini dinle
+        document.addEventListener('visibilitychange', function() {
+            if (!document.hidden && isLoggedIn) {
+                // Sayfa tekrar görünür olduğunda verileri yenile
+                autoRefresh();
+            }
+        });
+    </script>
+</body>
+</html>
